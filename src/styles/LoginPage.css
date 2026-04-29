@@ -1,0 +1,152 @@
+body {
+  background: linear-gradient(135deg, #f5f9ff, #eaf2ff);
+}
+
+.login-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.login-left::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50px;
+  height: 100%;
+  background: linear-gradient(180deg, #1565c0, #0d47a1);
+}
+
+.login-left,
+.login-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-left {
+  flex-direction: column;
+  background: #ffffff;
+  color: #0d47a1;
+  padding: 2rem;
+  position: relative;
+}
+
+.logo {
+  width: 350px;
+  margin-bottom: 20px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.login-left h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.login-left p {
+  font-size: 1.2rem;
+}
+
+.login-card{
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+  font-family: 'Poppins', sans-serif !important;
+}
+
+
+.login-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0d47a1;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.login-card p {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.form-group {
+  margin-bottom: 10px; 
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f2a37;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #0d47a1;
+  outline: none;
+}
+
+
+.error-text {
+  color: #d32f2f;
+  font-size: 13px;
+  margin: 4px 0 8px;
+  text-align: center;
+}
+
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #0d47a1;
+  color: white;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-top: 6px; 
+}
+
+.login-btn:hover {
+  background: #08337a;
+}
+
+
+.register-text {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.register-text a {
+  color: #0d47a1;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.register-text a:hover {
+  text-decoration: underline;
+}

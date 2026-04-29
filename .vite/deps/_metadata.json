@@ -1,0 +1,42 @@
+{
+  "hash": "9cbdb7f3",
+  "configHash": "d1655652",
+  "lockfileHash": "ded024a2",
+  "browserHash": "cd21460e",
+  "optimized": {
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "7a1ef6e8",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "51919b1f",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "8ced3917",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "d8c7a4e4",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "react-DTjSBzeh": {
+      "file": "react-DTjSBzeh.js",
+      "isDynamicEntry": false
+    },
+    "react-dom-EcJP2q-5": {
+      "file": "react-dom-EcJP2q-5.js",
+      "isDynamicEntry": false
+    }
+  }
+}
