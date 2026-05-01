@@ -1,21 +1,16 @@
-import { Routes, Route } from 'react-router-dom';
-import LoginForm from '../components/LoginForm';
-import RegisterForm from '../components/RegisterForm';
-import ProtectedRoute from './ProtectedRoute';
 
-function App() {
+import { Routes, Route } from "react-router-dom";
+import LoginForm from "../components/LoginForm";
+import RegisterForm from "../components/RegisterForm";
+
+function AppRoutes() {
+
   return (
     <Routes>
       <Route path="/" element={<LoginForm />} />
       <Route path="/register" element={<RegisterForm />} />
-      <Route path="/home" element={
-        <ProtectedRoute>
-         
-        </ProtectedRoute>
-      }
-      />
     </Routes>
   );
 }
 
-export default App;
+export default AppRoutes;
