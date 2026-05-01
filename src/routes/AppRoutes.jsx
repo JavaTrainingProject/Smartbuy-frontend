@@ -1,8 +1,10 @@
+
 import { Routes, Route } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 
 function AppRoutes() {
+
   return (
     <Routes>
       <Route path="/" element={<LoginForm />} />
