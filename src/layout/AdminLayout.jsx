@@ -1,13 +1,13 @@
-import Navbar from "../components/Navbar";
+import AdminNavbar from "../components/AdminNavbar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Outlet } from "react-router-dom";
 
-function Layout() {
+function AdminLayout() {
   return (
     <div className="app-layout">
 
-      <Navbar />
+      <AdminNavbar />
 
       <div className="right-area">
 
@@ -28,4 +28,4 @@ function Layout() {
   );
 }
 
-export default Layout;
+export default AdminLayout;
