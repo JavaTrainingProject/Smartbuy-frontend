@@ -29,3 +29,28 @@ export const loginUser = (loginData) =>{
 export const registerUser = (registerData) =>{
     return apiRequest(`${BASE_URL}/user`,registerData)
 };
+
+let accessToken = null;
+export const setAccessToken = (token) =>{
+  accessToken = token;
+  //sessionStorage.setItem("accessToken", token);
+  localStorage.setItem("accessToken", token);
+};
+
+export const getAccessToken = () => {
+  return accessToken || localStorage.getItem("accessToken");
+};
+
+export const setRefreshToken = (token) =>{
+  localStorage.setItem("refreshToken",token);
+};
+
+export const getRefreshToken = () =>{
+  return localStorage.getItem("refreshToken");
+};
+
+export const clearTokens =() =>{
+  accessToken = null;
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+};
