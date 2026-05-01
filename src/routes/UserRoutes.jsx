@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import Layout from "../layout/Layout";
+import UserLayout from "../layout/UserLayout";
 import UserDashboard from "../pages/UserDasboard";
 
 function UserRoutes() {
   return (
     <Routes>
-      <Route path="/user" element={<Layout />}>
+      <Route path="/user" element={<UserLayout />}>
         <Route index element={<UserDashboard />} />
       </Route>
     </Routes>
