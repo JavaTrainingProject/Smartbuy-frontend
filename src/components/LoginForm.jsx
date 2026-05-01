@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/authService';
-import '../styles/LoginPage.css'
+import '../styles/LoginPage.css';
 
 function LoginForm() {
 
@@ -53,7 +53,7 @@ function LoginForm() {
             localStorage.setItem('refreshToken', response.refreshToken);
             localStorage.setItem('userId', response.userId);
             localStorage.setItem('role',response.role);
-            navigate('/home');
+            navigate('/user');
         }catch(error){
     
             setApiError("Invalid email or password");
