@@ -57,7 +57,11 @@ function LoginForm() {
 
             localStorage.setItem('userId', response.id);
             localStorage.setItem('role',response.role);
+            if(response.role === "ADMIN"){
+                navigate("/admin")
+            }else{
             navigate('/user');
+            }
         }catch(error){
             setApiError("Invalid email or password");
         
