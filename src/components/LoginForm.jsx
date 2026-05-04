@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { setAccessToken, setRefreshToken } from '../services/authService';
+import { login } from '../services/Login';
+import '../styles/LoginPage.css';
+import axiosInstance from '../services/axiosInstance';
 import { loginUser } from '../services/authService';
-import '../styles/LoginPage.css'
+import '../styles/LoginPage.css';
+
 
 function LoginForm() {
 
@@ -46,23 +51,21 @@ function LoginForm() {
 
         try{
             setLoading(true);
+            const response = await login(formData);
+            setAccessToken(response.token);
+            setRefreshToken(response.refreshToken);
 
-            const response=await loginUser(formData);
-
-            localStorage.setItem('accessToken', response.accessToken);
-            localStorage.setItem('refreshToken', response.refreshToken);
-            localStorage.setItem('userId', response.userId);
+            localStorage.setItem('userId', response.id);
             localStorage.setItem('role',response.role);
-            navigate('/home');
+            navigate('/user');
         }catch(error){
-    
             setApiError("Invalid email or password");
         
         }finally{
             setLoading(false);
         }
     };
-
+     
     const firstError = errors.email || errors.password;
   return (
     <div className="login-container">
@@ -96,6 +99,7 @@ function LoginForm() {
                     <button type="Submit" className='login-btn' disabled={loading}>
                         {'Login'}
                     </button>
+
                 </form>
 
                 <p className='register-text'>
