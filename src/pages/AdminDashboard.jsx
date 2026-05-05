@@ -1,19 +1,15 @@
 
 import '../styles/AdminDashboard.css';
 
-function Home() {
+function AdminDashboard() {
   return (
-    <section className="hero-container">
-      <div className="hero-left">
-        <h1>YOUR SMART SHOPPING PARTNER</h1>
-        <p>All you wants is here!!</p>
-
-        <div className="buttons">
-          <button className="outline">SHOP NOW</button>
-        </div>
+    
+      <div className="admin-container">
+        <h1>Admin Dashboard</h1>
+        <p>Manage users, products, and system here</p>
       </div>
-    </section>
+
   );
 }
 
-export default Home;
+export default AdminDashboard;

@@ -62,7 +62,7 @@ function RegisterForm(){
 
           setTimeout(() =>{
             navigate('/');
-          }, 1500);
+          }, 1000);
         } catch(error){
             const msg=error?.response?.data?.message || error?.response?.data || "Registration failed";
             setApiMessage(msg);

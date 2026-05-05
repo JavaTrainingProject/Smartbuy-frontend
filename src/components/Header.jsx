@@ -69,7 +69,11 @@ import { jwtDecode } from "jwt-decode";
 
         {open && (
           <div className="dropdown">
-            <p>My Profile</p>
+            <p onClick={() =>{
+              setOpen(false);
+              navigate("/user/profile");
+            }}>My Profile</p>
+            
             <p onClick={handleLogout}>Logout</p>
           </div>
         )}
