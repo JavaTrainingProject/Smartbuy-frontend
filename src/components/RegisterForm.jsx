@@ -58,10 +58,13 @@ function RegisterForm(){
                 email:formData.email.trim().toLowerCase(),
                 user_password:formData.password.trim()
           });
-          setApiMessage("Registration successful!");
+
+          localStorage.setItem("otp_email",formData.email.trim().toLowerCase());
+          
+          setApiMessage("OTP sent to your email");
 
           setTimeout(() =>{
-            navigate('/');
+            navigate('/verify-otp');
           }, 1000);
         } catch(error){
             const msg=error?.response?.data?.message || error?.response?.data || "Registration failed";
@@ -100,7 +103,7 @@ function RegisterForm(){
                         <p className="error-text">{firstError}</p>
                        ) : apiMessage && (
                         <p className='error-text'
-                        style={{color:apiMessage.includes("successful") ? "green" : "red"}}
+                        style={{color:apiMessage.toLowerCase().includes("otp") ? "green" : "red"}}
                         >
                             {apiMessage}
                         </p>
