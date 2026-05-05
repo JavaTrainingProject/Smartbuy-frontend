@@ -57,6 +57,7 @@ function LoginForm() {
 
             localStorage.setItem('userId', response.id);
             localStorage.setItem('role',response.role);
+            localStorage.setItem("userId",response.id);
             if(response.role === "ADMIN"){
                 navigate("/admin")
             }else{
