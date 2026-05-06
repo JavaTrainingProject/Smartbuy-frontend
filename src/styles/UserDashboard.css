@@ -212,18 +212,11 @@ body {
   padding: 10px 20px;
 }
 
-/* .content-area {
+.content-area {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-} */
-.content-area {
-  flex: 1;
-  padding: 30px;
-  align-items: flex-start; 
-  justify-content: flex-end;
-  width: 1650px;
 }
 
 .center-footer {
