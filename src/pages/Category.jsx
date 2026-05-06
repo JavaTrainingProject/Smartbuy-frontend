@@ -10,7 +10,7 @@ function CategoryPage() {
   const [name, setName] = useState("");
   const [editId, setEditId] = useState(null);
 
-  // ✅ FETCH ACTIVE CATEGORIES
+
   const fetchCategories = async () => {
     try {
       const res = await axios.get(`${API_URL}/active`);
@@ -25,7 +25,7 @@ function CategoryPage() {
     fetchCategories();
   }, []);
 
-  // ✅ ADD / UPDATE
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -50,14 +50,14 @@ function CategoryPage() {
     }
   };
 
-  // ✅ EDIT
+
   const handleEdit = (cat) => {
     setName(cat.name || cat.categoryName); // depending on DTO
     setEditId(cat.id); // 🔥 backend uses id, not _id
     setShowModal(true);
   };
 
-  // ✅ DELETE
+  
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${API_URL}/${id}`);
@@ -104,7 +104,7 @@ function CategoryPage() {
         </tbody>
       </table>
 
-      {/* Modal */}
+     
       {showModal && (
         <div className="modal">
           <div className="modal-content">
