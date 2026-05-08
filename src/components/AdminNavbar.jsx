@@ -11,8 +11,13 @@ function AdminNavbar() {
       <ul className="menu">
         <li><Link to="/admin/home"> Home</Link></li>
         <li><Link to="/admin/category"> Category</Link></li>
-        <li><Link to="/subcategory"> SubCategory</Link></li>
-        <li><Link to="/product">Product</Link></li>
+         <li>
+          <Link to="/admin/subcategories">SubCategory</Link>
+        </li>
+
+        <li>
+          <Link to="/admin/products">Product</Link>
+        </li>
       </ul>
     </div>
   );

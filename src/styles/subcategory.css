@@ -1,0 +1,155 @@
+.subcategory-page {
+  padding: 20px;
+  margin-left: 220px;
+  width: calc(100% - 220px);
+  box-sizing: border-box;
+}
+
+.subcategory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.subcategory-header h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.add-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-btn:hover {
+  opacity: 0.9;
+}
+
+.subcategory-form {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.subcategory-form select,
+.subcategory-form input,
+.subcategory-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.subcategory-form textarea {
+  min-height: 100px;
+  resize: none;
+}
+
+.subcategory-form button {
+  width: fit-content;
+  background-color: #16a34a;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.subcategory-form button:hover {
+  opacity: 0.9;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.subcategory-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.subcategory-table th,
+.subcategory-table td {
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.subcategory-table th {
+  background-color: #f3f4f6;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn {
+  background-color: #f59e0b;
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background-color: #dc2626;
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+
+  .subcategory-form {
+    grid-template-columns: 1fr;
+  }
+
+  .subcategory-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .subcategory-header h2 {
+    font-size: 20px;
+  }
+
+  .add-btn {
+    width: 100%;
+  }
+
+  .subcategory-form button {
+    width: 100%;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}

@@ -3,7 +3,7 @@ import AdminLayout from "../layout/AdminLayout";
 import AdminDashboard from "../pages/AdminDashboard";
 import CategoryRoutes from "./CategoryRoutes";
 import AdminHome from "../pages/AdminHome";
-
+import SubCategoryPage from "../pages/SubCategoryPage";
 function AdminRoutes() {
   return (
     <Routes>
@@ -12,7 +12,10 @@ function AdminRoutes() {
         <Route index element={<AdminDashboard />} />
 
         <Route path="home" element={<AdminHome />} />
+<Route path="subcategories" element={<SubCategoryPage />}
+        />
 
+     
         {CategoryRoutes}
       </Route>
     </Routes>
