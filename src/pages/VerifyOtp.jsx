@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/LoginPage.css"
 import axiosInstance from "../services/axiosInstance";
@@ -23,8 +23,9 @@ function VerifyOtp(){
     );
 
     setMessage(res.data);
+    clearOtpStorage()
 
-    setTimeout(() => navigate("/"), 500);
+    setTimeout(() => navigate("/"), 800);
 
   } catch (err) {
     setMessage(err.response?.data || "Invalid OTP");
@@ -40,6 +41,30 @@ function VerifyOtp(){
         localStorage.setItem("otp_expiry", Date.now() +5*60*1000);
         setMessage("OTP resent successfully");
     };
+
+    useEffect(() => {
+    const expiry = localStorage.getItem("otp_expiry");
+
+    if (!expiry) return;
+
+    const timeLeft = Number(expiry) - Date.now();
+
+    if (timeLeft <= 0) {
+        clearOtpStorage();
+    } else {
+        const timer = setTimeout(() => {
+            clearOtpStorage();
+        }, timeLeft);
+
+        return () => clearTimeout(timer);
+    }
+}, []);
+
+    const clearOtpStorage = () => {
+    localStorage.removeItem("otp");
+    localStorage.removeItem("otp_email");
+    localStorage.removeItem("otp_expiry");
+};
 
     return(
         <div className="login-container">
