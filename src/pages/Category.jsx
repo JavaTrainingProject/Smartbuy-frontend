@@ -1,42 +1,52 @@
 import { useEffect, useState } from "react";
 import '../styles/Category.css';
-import axios from "axios";
-
-const API_URL = "http://localhost:8080/api/categories";
+import API from "../services/axiosInstance";
 
 function CategoryPage() {
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState("");
+  const [status, setStatus] = useState("ACTIVE");
   const [editId, setEditId] = useState(null);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
-  // ✅ FETCH ACTIVE CATEGORIES
+
   const fetchCategories = async () => {
     try {
-      const res = await axios.get(`${API_URL}/active`);
-      setCategories(res.data.data.content || res.data.data);
+      const res = await API.get(`/admin/categories?page=${page}&size=5&sortBy=id&direction=asc`);
+
+      console.log("API RESPONSE:", res.data);
+
+      setCategories(
+        res.data?.data?.content || res.data?.data || []
+      );
+      const pageData = res.data.data;
+      setTotalPages(pageData.totalPages);
 
     } catch (err) {
-      console.error("Error fetching:", err);
+      console.error("Error fetching:", err.response?.data || err.message);
     }
   };
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [page]);
 
-  // ✅ ADD / UPDATE
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       if (editId) {
-        await axios.put(`${API_URL}/${editId}`, {
-          categoryName: name,
+        await API.put(`/admin/categories/${editId}`, {
+          categoryName: name.trim(),
+
         });
       } else {
-        await axios.post(API_URL, {
-          categoryName: name,
+        await API.post("/admin/categories", {
+          categoryName: name.trim(),
+
         });
       }
 
@@ -46,36 +56,61 @@ function CategoryPage() {
       setShowModal(false);
 
     } catch (err) {
-      console.error("Error saving:", err);
+      console.error("Error saving:", err.response?.data || err.message);
     }
   };
 
-  // ✅ EDIT
+
   const handleEdit = (cat) => {
-    setName(cat.name || cat.categoryName); // depending on DTO
-    setEditId(cat.id); // 🔥 backend uses id, not _id
+    setName(cat.categoryName);
+    setStatus(cat.status);
+    setEditId(cat.id);
     setShowModal(true);
   };
 
-  // ✅ DELETE
-  const handleDelete = async (id) => {
+
+
+  const handleToggle = async (cat) => {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      if (cat.status === "ACTIVE") {
+
+        await API.delete(
+          `/admin/categories/${cat.id}`
+        );
+
+      } else {
+
+        await API.put(
+          `/admin/categories/${cat.id}`,
+          {
+            status: "ACTIVE"
+          }
+        );
+
+      }
+
       fetchCategories();
-    } catch (err) {
-      console.error("Error deleting:", err);
+
+    } catch (error) {
+
+      console.error(
+        "Toggle failed",
+        error.response?.data || error.message
+      );
+
     }
   };
 
   const handleAddClick = () => {
-    setName("");
-    setEditId(null);
-    setShowModal(true);
-  };
+  setName("");
+  setStatus("ACTIVE");
+  setEditId(null);
+  setShowModal(true);
+};
 
   return (
     <div className="category-container">
-      
+
       <div className="header">
         <h2>Categories</h2>
         <button className="add-btn" onClick={handleAddClick}>
@@ -86,25 +121,77 @@ function CategoryPage() {
       <table className="category-table">
         <thead>
           <tr>
+            <th>S.No</th>
             <th>Name</th>
             <th style={{ textAlign: "right" }}>Actions</th>
           </tr>
         </thead>
 
         <tbody>
-          {categories.map((cat) => (
-            <tr key={cat.id}>
-              <td>{cat.name || cat.categoryName}</td>
-              <td style={{ textAlign: "right" }}>
-                <button onClick={() => handleEdit(cat)} className="edit-btn">Edit</button>
-                <button onClick={() => handleDelete(cat.id)}className="delete-btn">Delete</button>
+          {categories.length === 0 ? (
+            <tr>
+              <td colSpan="2" style={{ textAlign: "center" }}>
+                No categories found
               </td>
             </tr>
-          ))}
+          ) : (
+            categories.map((cat, index) => (
+              <tr key={cat.id}>
+                <td>{page * 5 + index + 1}</td>
+
+                <td>{cat.categoryName}</td>
+
+                <td>
+                  <div className="actions-container">
+                  <button
+                    onClick={() => handleEdit(cat)}
+                    className="edit-btn"
+                  >
+                    Edit
+                  </button>
+
+                  <div className="status-container">
+
+                    <button
+                      className={`toggle-btn ${cat.status === "ACTIVE"
+                          ? "active"
+                          : "inactive"
+                        }`}
+                      onClick={() => handleToggle(cat)}
+                    >
+                      <div className="toggle-circle"></div>
+                    </button>
+
+
+                  </div>
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
 
-      {/* Modal */}
+      <div className="pagination">
+        <button
+          disabled={page === 0}
+          onClick={() => setPage(page - 1)}
+        >
+          Prev
+        </button>
+
+        <span>
+          Page {page + 1} of {totalPages}
+        </span>
+
+        <button
+          disabled={page + 1 === totalPages}
+          onClick={() => setPage(page + 1)}
+        >
+          Next
+        </button>
+      </div>
+
       {showModal && (
         <div className="modal">
           <div className="modal-content">
