@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Outlet } from "react-router-dom";
+import "../styles/Layout.css";
 
 function Layout() {
   return (
@@ -11,7 +12,7 @@ function Layout() {
 
       <div className="right-area">
 
-        <div className="top-header">
+        <div className="header top-header">
           <Header />
         </div>
 

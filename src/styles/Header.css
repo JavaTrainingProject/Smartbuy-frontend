@@ -1,55 +1,85 @@
 .header {
-  height: 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 15px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  text-align: center;
-  background-color: white;
+    height: 80px;
+
+    width: 100%;
+
+    background: linear-gradient(to right, #1d4db3, #1d4db3);
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    padding-right:  0 10px 0 0;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .profile-section {
-  position: relative;
+    margin-left: auto;
+    margin-right: 0;
 }
 
 .profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
+    background: white;
+
+    padding: 8px 14px;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.profile:hover {
+    transform: translateY(-2px);
 }
 
 .avatar {
-  width: 35px;
-  height: 35px;
-  background: #1e3a8a;
+  width: 36px;
+  height: 36px;
+  background: #1d4db3;
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .dropdown {
   position: absolute;
-  top: 50px;
+  top: 70px;
   right: 0;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  width: 150px;
+  border-radius: 10px;
+  min-width: 180px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+  overflow: hidden;
+  z-index: 1000;
 }
 
 .dropdown p {
-  padding: 10px;
+  padding: 14px 18px;
   margin: 0;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .dropdown p:hover {
-  background: #f1f5f9;
+  background: #f2f6ff;
+  color: #1d4db3;
 }
 
 .dropdown {

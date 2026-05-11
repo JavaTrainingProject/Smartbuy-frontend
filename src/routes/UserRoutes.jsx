@@ -6,7 +6,7 @@ import UserProfile from "../pages/UserProfile";
 function UserRoutes() {
   return (
     <Routes>
-       <Route path="/user" element={
+       <Route  element={
         <ProtectedRoute allowedRoles={["USER"]}>
           <UserLayout/>
         </ProtectedRoute>

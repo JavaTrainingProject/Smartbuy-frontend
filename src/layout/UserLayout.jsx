@@ -2,7 +2,7 @@ import UserNavbar from "../components/UserNavbar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Outlet } from "react-router-dom";
-
+import "../styles/Layout.css";
 function UserLayout() {
   return (
     <div className="app-layout">

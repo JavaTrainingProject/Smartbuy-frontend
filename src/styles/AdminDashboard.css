@@ -208,11 +208,7 @@ body {
 }
 
 
-.top-header {
-  display: flex;
-  justify-content: right;
-  padding: 10px 20px;
-}
+
 
 .center-footer {
   display: flex;

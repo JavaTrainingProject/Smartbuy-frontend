@@ -11,7 +11,14 @@ const apiRequest = async (url, data) => {
     body: JSON.stringify(data)
   });
 
-  const result = await response.json();
+  const text = await response.text();
+  let result;
+
+  try{
+    result = JSON.parse(text);
+  } catch{
+    result = text;
+  }
 
   if (!response.ok) {
     throw {
