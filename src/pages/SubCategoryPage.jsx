@@ -31,23 +31,23 @@ function SubCategoryPage() {
     fetchSubCategories();
   }, [page]);
 
- const fetchCategories = async () => {
-  try {
-    const response = await getActiveCategories();
+  const fetchCategories = async () => {
+    try {
+      const response = await getActiveCategories();
 
-    const result = response.data?.data;
+      const result = response.data?.data;
 
 
-    const list = Array.isArray(result)
-      ? result
-      : result?.content || [];
+      const list = Array.isArray(result)
+        ? result
+        : result?.content || [];
 
-    setCategories(list);
-  } catch (error) {
-    console.log("Category error:", error);
-    setCategories([]);
-  }
-};
+      setCategories(list);
+    } catch (error) {
+      console.log("Category error:", error);
+      setCategories([]);
+    }
+  };
 
 
   const fetchSubCategories = async () => {
@@ -77,40 +77,40 @@ function SubCategoryPage() {
     setShowModal(false);
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const payload = {
-      categoryId: Number(formData.categoryId),
-      subCategoryName: formData.subCategoryName?.trim(),
-      subCategoryDescription: formData.subCategoryDescription?.trim(),
-    };
+    try {
+      const payload = {
+        categoryId: Number(formData.categoryId),
+        subCategoryName: formData.subCategoryName?.trim(),
+        subCategoryDescription: formData.subCategoryDescription?.trim(),
+      };
 
-  
-    console.log("SAVE PAYLOAD:", payload);
 
-    if (!payload.categoryId || !payload.subCategoryName) {
-      alert("Category and SubCategory Name are required");
-      return;
+      console.log("SAVE PAYLOAD:", payload);
+
+      if (!payload.categoryId || !payload.subCategoryName) {
+        alert("Category and SubCategory Name are required");
+        return;
+      }
+
+      if (editingId) {
+        await updateSubCategory(editingId, payload);
+      } else {
+        await createSubCategory(payload);
+      }
+
+      fetchSubCategories();
+      resetForm();
+
+    } catch (error) {
+      console.log(
+        "Submit error:",
+        error?.response?.data || error.message
+      );
     }
-
-    if (editingId) {
-      await updateSubCategory(editingId, payload);
-    } else {
-      await createSubCategory(payload);
-    }
-
-    fetchSubCategories();
-    resetForm();
-
-  } catch (error) {
-    console.log(
-      "Submit error:",
-      error?.response?.data || error.message
-    );
-  }
-};
+  };
 
   const handleEdit = (item) => {
     setEditingId(item.id);
@@ -190,26 +190,25 @@ function SubCategoryPage() {
                 <td>{item.subCategoryDescription}</td>
 
                 <td>
-                <div className="actions-container">
+                  <div className="actions-container">
 
-  <button
-    className="edit-btn"
-    onClick={() => handleEdit(item)}
-  >
-    Edit
-  </button>
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(item)}
+                    >
+                      Edit
+                    </button>
 
- 
-  <button
-    className={`toggle-btn ${
-      item.status === "ACTIVE" ? "active" : "inactive"
-    }`}
-    onClick={() => toggleStatus(item.id, item.status)}
-  >
-    <div className="toggle-circle"></div>
-  </button>
 
-</div>
+                    <button
+                      className={`toggle-btn ${item.status === "ACTIVE" ? "active" : "inactive"
+                        }`}
+                      onClick={() => toggleStatus(item.id, item.status)}
+                    >
+                      <div className="toggle-circle"></div>
+                    </button>
+
+                  </div>
                 </td>
               </tr>
             ))
@@ -235,25 +234,25 @@ function SubCategoryPage() {
             <h3>{editingId ? "Edit SubCategory" : "Add SubCategory"}</h3>
 
             <form onSubmit={handleSubmit}>
-             <select
-  name="categoryId"
-  value={formData.categoryId}
-  onChange={(e) =>
-    setFormData({
-      ...formData,
-      categoryId: Number(e.target.value), // IMPORTANT FIX
-    })
-  }
-  required
->
-  <option value="">Select Category</option>
+              <select
+                name="categoryId"
+                value={formData.categoryId}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    categoryId: Number(e.target.value), // IMPORTANT FIX
+                  })
+                }
+                required
+              >
+                <option value="">Select Category</option>
 
-  {(Array.isArray(categories) ? categories : []).map((cat) => (
-    <option key={cat.id} value={cat.id}>
-      {cat.categoryName}
-    </option>
-  ))}
-</select>
+                {(Array.isArray(categories) ? categories : []).map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.categoryName}
+                  </option>
+                ))}
+              </select>
 
               <input
                 type="text"
