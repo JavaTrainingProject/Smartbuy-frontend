@@ -16,7 +16,7 @@ function AdminRoutes() {
         />
 
      
-        {CategoryRoutes}
+         {CategoryRoutes} 
       </Route>
     </Routes>
   );

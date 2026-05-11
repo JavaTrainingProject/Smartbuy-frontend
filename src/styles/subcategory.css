@@ -1,155 +1,271 @@
-.subcategory-page {
-  padding: 20px;
-  margin-left: 220px;
-  width: calc(100% - 220px);
-  box-sizing: border-box;
+
+.category-container {
+  width: 100%;
+  max-width: 800px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 }
 
-.subcategory-header {
+
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
+  margin-bottom: 15px;
 }
 
-.subcategory-header h2 {
-  margin: 0;
+.header h2 {
   font-size: 24px;
+  font-weight: 600;
+  color: #0d47a1;
 }
+
 
 .add-btn {
-  background-color: #2563eb;
+  background: #1565c0;
   color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
   border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
+  font-weight: 500;
   cursor: pointer;
-  font-size: 14px;
+  transition: 0.3s;
 }
 
 .add-btn:hover {
-  opacity: 0.9;
+  background: #0d47a1;
 }
 
-.subcategory-form {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 25px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
-
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-}
-
-.subcategory-form select,
-.subcategory-form input,
-.subcategory-form textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 14px;
-  box-sizing: border-box;
-}
-
-.subcategory-form textarea {
-  min-height: 100px;
-  resize: none;
-}
-
-.subcategory-form button {
-  width: fit-content;
-  background-color: #16a34a;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.subcategory-form button:hover {
-  opacity: 0.9;
-}
-
-.table-container {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.subcategory-table {
+.category-table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
 }
 
-.subcategory-table th,
-.subcategory-table td {
-  border: 1px solid #e5e7eb;
-  padding: 8px;
+.category-table thead {
+  background: #f1f6ff;
+}
+
+.category-table th {
+  padding: 14px;
   text-align: left;
-  font-size: 14px;
+  color: #0d47a1;
+  font-weight: 600;
 }
 
-.subcategory-table th {
-  background-color: #f3f4f6;
+.category-table td {
+  padding: 14px;
+  border-bottom: 1px solid #eee;
 }
 
-.action-buttons {
-  display: flex;
-  gap: 10px;
+.category-table tr:hover {
+  background: #f9fbff;
 }
 
 .edit-btn {
-  background-color: #f59e0b;
+  background: #42a5f5;
   color: white;
   border: none;
-  padding: 7px 14px;
-  border-radius: 5px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  margin-right: 8px;
   cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.edit-btn:hover {
+  background: #1e88e5;
 }
 
 .delete-btn {
-  background-color: #dc2626;
+  background: #ef5350;
   color: white;
   border: none;
-  padding: 7px 14px;
-  border-radius: 5px;
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-.edit-btn:hover,
 .delete-btn:hover {
-  opacity: 0.9;
+  background: #d32f2f;
 }
 
-@media (max-width: 768px) {
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
 
-  .subcategory-form {
-    grid-template-columns: 1fr;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+}
+
+
+.modal-content {
+  background: white;
+  width: 400px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+  animation: popup 0.3s ease;
+}
+
+
+@keyframes popup {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
   }
 
-  .subcategory-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .subcategory-header h2 {
-    font-size: 20px;
-  }
-
-  .add-btn {
-    width: 100%;
-  }
-
-  .subcategory-form button {
-    width: 100%;
-  }
-
-  .action-buttons {
-    flex-direction: column;
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }
+
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+
+.modal-actions button {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+
+.modal-actions button[type="submit"] {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+}
+
+.modal-actions button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(21, 101, 192, 0.4);
+  background-color: #1e88e5;
+  
+}
+
+
+.modal-actions button[type="button"] {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;background:#ef5350 ;
+  color: white;
+  border: 1px solid #ddd;
+}
+
+.modal-actions button[type="button"]:hover {
+  background: #e0e0e0;
+  transform: translateY(-1px);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+
+.status-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+
+.toggle-btn {
+  width: 52px;
+  height: 28px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: 0.3s ease;
+  padding: 0;
+}
+
+
+.toggle-btn.active {
+  background-color: #22c55e;
+}
+
+
+.toggle-btn.inactive {
+  background-color: #d1d5db;
+}
+
+.toggle-circle {
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+
+.toggle-btn.active .toggle-circle {
+  transform: translateX(24px);
+}
+
+.actions-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
