@@ -97,7 +97,7 @@ import { getUserById } from "../services/userService";
   }, []);
 
   return (
-    <div className="header">
+    <div className="mainheader">
 
       <div className="profile-section" ref={dropdownRef}>
         <div
