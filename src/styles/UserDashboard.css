@@ -97,13 +97,14 @@ body {
 }
 
 .hero-left {
-  background: #ffffff;
+  background: white;
   padding: 60px;
   border-radius: 20px;
   text-align: center;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
   max-width: 800px;
   width: 100%;
+  
 }
 
 .hero-left h1 {
@@ -177,13 +178,12 @@ body {
   color: #333;
 }
 
-
 .footer {
   text-align: center;
   padding: 15px;
   background: #ffffff;
   border-top: 1px solid #ddd;
-  position: fixed;
+  
   bottom: 0;
 }
 
@@ -215,8 +215,7 @@ body {
 .content-area {
   flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-left: 25rem;
 }
 
 .center-footer {
