@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getAccessToken } from "../services/authService";
 import { jwtDecode } from "jwt-decode";
 import "../styles/Profile.css";
-import { updateUserProfile } from "../services/userService";
+import { getUserById, updateUserProfile } from "../services/userService";
 import Toast from "../components/Toast";
 
 function UserProfile(){
@@ -20,19 +20,23 @@ function UserProfile(){
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() =>{
-        const token=getAccessToken();
-        if(token){
-            const decode = jwtDecode(token);
+        const fetchUser = async() =>{
+            try{
+                const id = localStorage.getItem("userId");
+                if(!id) return;
 
-            const email=decode.sub;
-            const name=email.split("@")[0];
-
-            setUser({
-                fullName:name,
-                email:email
-            });
-            setUserId(localStorage.getItem("userId"));
-        }
+                setUserId(id);
+                const userData = await getUserById(id);
+            
+                setUser({
+                    fullName: userData.user_name,
+                    email: userData.email
+                });
+            } catch(error){
+                console.log("Failed to fetch user",error);
+            }
+        };
+        fetchUser();
     },[]);
 
     const handleChange =(e) =>{
@@ -49,6 +53,9 @@ function UserProfile(){
             };
 
         await updateUserProfile(userId,payload);
+
+        localStorage.setItem("fullName", user.fullName);
+        
         setIsEditing(false);
         setToast({
         message: "Profile updated successfully",

@@ -67,7 +67,16 @@ function RegisterForm(){
             navigate('/verify-otp');
           }, 1000);
         } catch(error){
-            const msg=error?.response?.data?.message || error?.response?.data || "Registration failed";
+            
+            let msg="Registration failed";
+
+            if(typeof error?.response?.data === "string"){
+                msg=error.response.data;
+            }
+            else if(error?.response?.data?.message) {
+                msg=error.response.data.message;
+
+            }
             setApiMessage(msg);
         } finally{
             setLoading(false);

@@ -41,7 +41,7 @@ function AdminHome() {
   };
 
    return (
-    <div className="dashboard-container">
+    <div className="dashboard-container admin-home-wrapper">
 
       <h1 className="dashboard-title">
         Admin Dashboard
