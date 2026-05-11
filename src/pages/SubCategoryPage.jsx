@@ -33,8 +33,9 @@ function SubCategoryPage() {
     try {
       const response = await getActiveCategories();
       setCategories(response.data.data.content);
+         console.log(response.data);
     } catch (error) {
-      console.log(error);
+     console.log(response.data);
     }
   };
 
@@ -42,8 +43,9 @@ function SubCategoryPage() {
     try {
       const response = await getAllSubCategories();
       setSubCategories(response.data.data);
+         console.log(response.data);
     } catch (error) {
-      console.log(error);
+        console.log(response.data);
     }
   };
 
@@ -128,11 +130,14 @@ function SubCategoryPage() {
           >
             <option value="">Select Category</option>
 
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.categoryName}
-              </option>
-            ))}
+  {categories.map((cat) => (
+  <option
+    key={cat.id}
+    value={cat.id}
+  >
+    {cat.categoryName}
+  </option>
+))}
           </select>
 
           <input
@@ -170,7 +175,7 @@ function SubCategoryPage() {
               <th>Description</th>
               <th>Status</th>
 
-              {/* ✅ Actions shown only when form is opened */}
+             
               {showForm && <th>Actions</th>}
 
             </tr>
