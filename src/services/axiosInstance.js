@@ -1,12 +1,17 @@
-
 import axios from 'axios';
-import { getAccessToken, getRefreshToken,  clearTokens, setAccessToken, setRefreshToken } from "./authService";
+import {
+  getAccessToken,
+  getRefreshToken,
+  clearTokens,
+  setAccessToken,
+  setRefreshToken
+} from "./authService";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8080/api",
 });
 
-
+// 🔹 Attach token
 axiosInstance.interceptors.request.use((config) => {
   const token = getAccessToken();
   if (token) {
@@ -21,7 +26,7 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if ((error.response?.status === 401 || error.response?.status === 403) && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
