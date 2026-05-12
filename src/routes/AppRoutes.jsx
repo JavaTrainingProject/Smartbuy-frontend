@@ -10,6 +10,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<LoginForm />} />
+      <Route path="/login" element={<LoginForm />} /> 
       <Route path="/register" element={<RegisterForm />} />
       <Route path="/verify-otp" element={<VerifyOtp />} />
        <Route path="/admin/*" element={<AdminRoutes />} />

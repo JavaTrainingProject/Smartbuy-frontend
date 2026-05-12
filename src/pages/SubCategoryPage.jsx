@@ -1,154 +1,236 @@
 import { useEffect, useState } from "react";
 
+import axiosInstance from "../services/axiosInstance";
+
 import {
   createSubCategory,
-  deleteSubCategory,
   getActiveCategories,
   getAllSubCategories,
   updateSubCategory,
-  toggleSubCategoryStatus,
 } from "../services/subCategoryService";
 
 import "../styles/subcategory.css";
 
 function SubCategoryPage() {
+
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
+
   const [editingId, setEditingId] = useState(null);
 
   const [page, setPage] = useState(0);
 
+  const [totalPages, setTotalPages] = useState(0);
+
+  const [successMsg, setSuccessMsg] = useState("");
+
+  const size = 10;
+
   const [formData, setFormData] = useState({
     categoryId: "",
     subCategoryName: "",
-    subCategoryDescription: "",
+    status: "ACTIVE",
   });
 
-  useEffect(() => {
-    fetchCategories();
-    fetchSubCategories();
-  }, [page]);
-
+  // ---------------- FETCH CATEGORIES ----------------
   const fetchCategories = async () => {
+
     try {
+
       const response = await getActiveCategories();
 
-      const result = response.data?.data;
+      const data = response.data?.data;
 
-
-      const list = Array.isArray(result)
-        ? result
-        : result?.content || [];
+      const list =
+        Array.isArray(data)
+          ? data
+          : data?.content || [];
 
       setCategories(list);
+
     } catch (error) {
-      console.log("Category error:", error);
-      setCategories([]);
+
+      console.log("CATEGORY ERROR:", error);
     }
   };
 
-
+  // ---------------- FETCH SUBCATEGORIES ----------------
   const fetchSubCategories = async () => {
+
     try {
-      const response = await getAllSubCategories(page);
-      setSubCategories(response.data.data || []);
+
+   const response = await getAllSubCategories(page, size);
+
+      console.log("SUBCATEGORY RESPONSE:", response.data);
+    
+      const data = response.data?.data;
+
+      const list =
+        Array.isArray(data)
+          ? data
+          : data?.content || [];
+
+      setSubCategories(list);
+
+    setTotalPages(
+  data?.totalPages ||
+  Math.ceil((list?.length || 0) / size) ||
+  1
+);
+
     } catch (error) {
-      console.log("SubCategory error:", error);
+
+      console.log("SUBCATEGORY ERROR:", error);
+
       setSubCategories([]);
     }
   };
 
+  useEffect(() => {
+
+    fetchCategories();
+    fetchSubCategories();
+
+  }, [page]);
+
+  // ---------------- HANDLE CHANGE ----------------
   const handleChange = (e) => {
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
+  // ---------------- RESET ----------------
   const resetForm = () => {
+
     setFormData({
       categoryId: "",
       subCategoryName: "",
-      subCategoryDescription: "",
+      status: "ACTIVE",
     });
+
     setEditingId(null);
+
     setShowModal(false);
   };
 
+  // ---------------- SUBMIT ----------------
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
+    const payload = {
+      categoryId: Number(formData.categoryId),
+      subCategoryName: formData.subCategoryName,
+      status: formData.status,
+    };
+
+    console.log("PAYLOAD:", payload);
+
     try {
-      const payload = {
-        categoryId: Number(formData.categoryId),
-        subCategoryName: formData.subCategoryName?.trim(),
-        subCategoryDescription: formData.subCategoryDescription?.trim(),
-      };
 
+      // UPDATE
+      if (editingId) {
 
-      console.log("SAVE PAYLOAD:", payload);
+        await updateSubCategory(editingId, payload);
 
-      if (!payload.categoryId || !payload.subCategoryName) {
-        alert("Category and SubCategory Name are required");
-        return;
+        setSuccessMsg(
+          "SubCategory updated successfully!"
+        );
       }
 
-      if (editingId) {
-        await updateSubCategory(editingId, payload);
-      } else {
+      // CREATE
+      else {
+
         await createSubCategory(payload);
+
+        setSuccessMsg(
+          "SubCategory added successfully!"
+        );
       }
 
       fetchSubCategories();
+
       resetForm();
 
+      setTimeout(() => {
+        setSuccessMsg("");
+      }, 2000);
+
     } catch (error) {
+
       console.log(
         "Submit error:",
-        error?.response?.data || error.message
+        error.response?.data || error.message
       );
     }
   };
 
-  const handleEdit = (item) => {
-    setEditingId(item.id);
+  // ---------------- EDIT ----------------
+ const handleEdit = (item) => {
 
-    setFormData({
-      categoryId: item.categoryId,
-      subCategoryName: item.subCategoryName,
-      subCategoryDescription: item.subCategoryDescription,
-    });
+  setEditingId(item.id);
 
-    setShowModal(true);
-  };
+  setFormData({
+    categoryId: item.categoryId || "",
+    subCategoryName: item.subCategoryName || "",
+    status: item.status || "ACTIVE",
+  });
 
-  const handleDelete = async (id) => {
+  setShowModal(true);
+};
+
+  // ---------------- TOGGLE STATUS ----------------
+  const toggleStatus = async (item) => {
+
     try {
-      await deleteSubCategory(id);
+
+      const newStatus =
+        item.status === "ACTIVE"
+          ? "INACTIVE"
+          : "ACTIVE";
+
+      console.log("NEW STATUS:", newStatus);
+
+      await axiosInstance.put(
+        `/subcategory/${item.id}`,
+        {
+          subCategoryName: item.subCategoryName,
+          categoryId: item.categoryId,
+          status: newStatus,
+        }
+      );
+
       fetchSubCategories();
+
     } catch (error) {
-      console.log("Delete error:", error);
+
+      console.log(
+        "TOGGLE ERROR:",
+        error.response?.data || error.message
+      );
     }
   };
 
-
-  const toggleStatus = async (id, currentStatus) => {
-    try {
-      const newStatus = currentStatus === "ACTIVE" ? "INACTIVE" : "ACTIVE";
-
-      await toggleSubCategoryStatus(id, newStatus);
-
-      fetchSubCategories();
-    } catch (error) {
-      console.log("Toggle error:", error);
-    }
-  };
-
+  // ---------------- UI ----------------
   return (
+
     <div className="category-container">
+
+      {/* SUCCESS MESSAGE */}
+      {successMsg && (
+        <div className="success-popup">
+          {successMsg}
+        </div>
+      )}
+
+      {/* HEADER */}
       <div className="header">
+
         <h2>SubCategories</h2>
 
         <button
@@ -160,38 +242,60 @@ function SubCategoryPage() {
         >
           + Add SubCategory
         </button>
+
       </div>
 
       {/* TABLE */}
       <table className="category-table">
+
         <thead>
+
           <tr>
             <th>S.No</th>
             <th>Category</th>
             <th>SubCategory</th>
-            <th>Description</th>
-            <th style={{ textAlign: "right" }}>Actions</th>
+            <th>Status</th>
+            <th style={{ textAlign: "right" }}>
+              Actions
+            </th>
           </tr>
+
         </thead>
 
         <tbody>
-          {subCategories?.length === 0 ? (
+
+          {subCategories.length === 0 ? (
+
             <tr>
-              <td colSpan="5" style={{ textAlign: "center" }}>
-                No subcategories found
+              <td
+                colSpan="5"
+                style={{ textAlign: "center" }}
+              >
+                No Data Found
               </td>
             </tr>
+
           ) : (
+
             subCategories.map((item, index) => (
+
               <tr key={item.id}>
-                <td>{page * 5 + index + 1}</td>
-                <td>{item.categoryName}</td>
-                <td>{item.subCategoryName}</td>
-                <td>{item.subCategoryDescription}</td>
 
                 <td>
+                  {page * size + index + 1}
+                </td>
+
+                <td>{item.categoryName}</td>
+
+                <td>{item.subCategoryName}</td>
+
+                <td>{item.status}</td>
+
+                <td>
+
                   <div className="actions-container">
 
+                    {/* EDIT */}
                     <button
                       className="edit-btn"
                       onClick={() => handleEdit(item)}
@@ -199,90 +303,124 @@ function SubCategoryPage() {
                       Edit
                     </button>
 
-
+                    {/* TOGGLE */}
                     <button
-                      className={`toggle-btn ${item.status === "ACTIVE" ? "active" : "inactive"
-                        }`}
-                      onClick={() => toggleStatus(item.id, item.status)}
+                      className={`toggle-btn ${
+                        item.status === "ACTIVE"
+                          ? "active"
+                          : "inactive"
+                      }`}
+                      onClick={() => toggleStatus(item)}
                     >
                       <div className="toggle-circle"></div>
                     </button>
 
                   </div>
+
                 </td>
+
               </tr>
             ))
           )}
+
         </tbody>
+
       </table>
 
       {/* PAGINATION */}
-      <div className="pagination">
-        <button disabled={page === 0} onClick={() => setPage(page - 1)}>
-          Prev
-        </button>
+<div className="pagination">
 
-        <span>Page {page + 1}</span>
+  <button
+    disabled={page <= 0}
+    onClick={() => setPage(prev => prev - 1)}
+  >
+    Prev
+  </button>
 
-        <button onClick={() => setPage(page + 1)}>Next</button>
-      </div>
+  <span>
+    Page {page + 1}
+  </span>
+
+  <button
+    disabled={subCategories.length < size}
+    onClick={() => setPage(prev => prev + 1)}
+  >
+    Next
+  </button>
+
+</div>
 
       {/* MODAL */}
       {showModal && (
+
         <div className="modal">
+
           <div className="modal-content">
-            <h3>{editingId ? "Edit SubCategory" : "Add SubCategory"}</h3>
+
+            <h3>
+              {editingId
+                ? "Edit SubCategory"
+                : "Add SubCategory"}
+            </h3>
 
             <form onSubmit={handleSubmit}>
+
+              {/* CATEGORY */}
               <select
                 name="categoryId"
                 value={formData.categoryId}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    categoryId: Number(e.target.value), // IMPORTANT FIX
-                  })
-                }
+                onChange={handleChange}
                 required
               >
-                <option value="">Select Category</option>
+                <option value="">
+                  Select Category
+                </option>
 
-                {(Array.isArray(categories) ? categories : []).map((cat) => (
-                  <option key={cat.id} value={cat.id}>
+                {categories.map((cat) => (
+
+                  <option
+                    key={cat.id}
+                    value={cat.id}
+                  >
                     {cat.categoryName}
                   </option>
+
                 ))}
               </select>
 
+              {/* SUBCATEGORY */}
               <input
                 type="text"
                 name="subCategoryName"
-                placeholder="SubCategory Name"
+                placeholder="Enter SubCategory Name"
                 value={formData.subCategoryName}
                 onChange={handleChange}
                 required
               />
 
-              <textarea
-                name="subCategoryDescription"
-                placeholder="Description"
-                value={formData.subCategoryDescription}
-                onChange={handleChange}
-              />
-
+              {/* BUTTONS */}
               <div className="modal-actions">
+
                 <button type="submit">
                   {editingId ? "Update" : "Save"}
                 </button>
 
-                <button type="button" onClick={resetForm}>
+                <button
+                  type="button"
+                  onClick={resetForm}
+                >
                   Cancel
                 </button>
+
               </div>
+
             </form>
+
           </div>
+
         </div>
       )}
+
     </div>
   );
 }
