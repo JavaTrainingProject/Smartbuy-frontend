@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import "../styles/AdminDashboard.css";
+import { getDashboardStats } from "../services/adminService";
+
 
 function AdminHome() {
 
@@ -17,29 +18,20 @@ function AdminHome() {
   }, []);
 
   const fetchDashboardStats = async () => {
-    try {
+  try {
 
-      const token = localStorage.getItem("token");
-       console.log("TOKEN:", token);
+    const data = await getDashboardStats();
 
-      const response = await axios.get(
-        "http://localhost:8080/api/admin/dashboard/stats",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+   
 
-      setStats(response.data);
+    setStats(data);
 
-    } catch (error) {
-      console.error("Error fetching dashboard stats:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+  } finally {
+    setLoading(false);
+  }
+};
    return (
     <div className="dashboard-container admin-home-wrapper">
 

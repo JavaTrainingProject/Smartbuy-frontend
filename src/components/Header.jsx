@@ -10,7 +10,16 @@ import { getUserById } from "../services/userService";
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const [user,setUser] = useState({name:""});
+const storedName = localStorage.getItem("fullName");
+
+const [user, setUser] = useState({
+  name:
+    storedName &&
+    storedName !== "undefined" &&
+    storedName !== "null"
+      ? storedName
+      : ""
+});
 
   const handleLogout = async () => {
     try{
@@ -105,7 +114,7 @@ import { getUserById } from "../services/userService";
           onClick={() => setOpen((prev) => !prev)}
         >
           <div className="avatar">
-            {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+          {user.name.charAt(0).toUpperCase()}
           </div>
           <span>{user.name}</span>
         </div>

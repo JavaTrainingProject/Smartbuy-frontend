@@ -56,11 +56,11 @@ function LoginForm() {
             localStorage.setItem('userId', response.id);
             localStorage.setItem('role',response.role);
             localStorage.setItem("userId",response.id);
-            localStorage.setItem("fullName", response.fullName);
+            localStorage.setItem("fullName", response.user_name);
             if(response.role === "ADMIN"){
-                navigate("/admin")
+                navigate("/admin/home")
             }else{
-            navigate('/user');
+            navigate('/user/home');
             }
         }catch(error){
             setApiError("Invalid email or password");
