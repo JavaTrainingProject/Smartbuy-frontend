@@ -55,6 +55,7 @@ function UserProfile(){
         await updateUserProfile(userId,payload);
 
         localStorage.setItem("fullName", user.fullName);
+        window.dispatchEvent(new Event("profileUpdated"));
         
         setIsEditing(false);
         setToast({
