@@ -1,15 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import "../styles/Header.css";
 import axiosInstance from "../services/axiosInstance";
-import { clearTokens, getAccessToken } from "../services/authService";
+import { getAccessToken, clearTokens } from "../services/authService";
 import { useNavigate } from "react-router-dom";  
-import { jwtDecode } from "jwt-decode"; 
+
+import { getUserById } from "../services/userService";
 
  function Header() {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const [user,setUser] = useState({name:""});
+const storedName = localStorage.getItem("fullName");
+
+const [user, setUser] = useState({
+  name:
+    storedName &&
+    storedName !== "undefined" &&
+    storedName !== "null"
+      ? storedName
+      : ""
+});
 
   const handleLogout = async () => {
     try{
@@ -26,17 +36,59 @@ import { jwtDecode } from "jwt-decode";
 
   
   useEffect(() => {
-    const token = getAccessToken();
 
-    if(token){
-      const decoded = jwtDecode(token);
-      const email=decoded.sub;
-      const name=email.split("@")[0];
-      const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
+    const storedName = localStorage.getItem("fullName");
 
-      setUser({name : formattedName});
+    if(storedName && storedName!== "undefined" && storedName!=="null"){
+      setUser({name: storedName});
+      return;
     }
+    const fetchUser = async () =>{
+      try{
+        const id = localStorage.getItem("userId");
+
+        if(!id) return;
+
+        const userData = await getUserById(id);
+        console.log(userData);
+
+        localStorage.setItem("fullName", userData.user_name);
+
+        setUser({
+          name:userData.user_name
+        });
+      } catch(error){
+        console.log("Failed to fetch user", error);
+      }
+    };
+    fetchUser();
   }, []);
+
+  useEffect(() => {
+
+    const updateProfileName = () => {
+
+        const updatedName =
+            localStorage.getItem("fullName");
+
+        if (updatedName) {
+            setUser({ name: updatedName });
+        }
+    };
+
+    window.addEventListener(
+        "profileUpdated",
+        updateProfileName
+    );
+
+    return () => {
+        window.removeEventListener(
+            "profileUpdated",
+            updateProfileName
+        );
+    };
+
+}, []);
 
   useEffect(() =>{
     const handleClickOutside = (event) => {
@@ -54,7 +106,7 @@ import { jwtDecode } from "jwt-decode";
   }, []);
 
   return (
-    <div className="header">
+    <div className="mainheader">
 
       <div className="profile-section" ref={dropdownRef}>
         <div
@@ -62,7 +114,7 @@ import { jwtDecode } from "jwt-decode";
           onClick={() => setOpen((prev) => !prev)}
         >
           <div className="avatar">
-            {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+          {user.name.charAt(0).toUpperCase()}
           </div>
           <span>{user.name}</span>
         </div>
@@ -71,7 +123,9 @@ import { jwtDecode } from "jwt-decode";
           <div className="dropdown">
             <p onClick={() =>{
               setOpen(false);
-              navigate("/user/profile");
+              const role = localStorage.getItem("role");
+
+              navigate(`/${role.toLowerCase()}/profile`);
             }}>My Profile</p>
             
             <p onClick={handleLogout}>Logout</p>

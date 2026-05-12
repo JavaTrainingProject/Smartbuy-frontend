@@ -83,13 +83,11 @@ import ProductRoutes from "./ProductRoutes";
 function UserRoutes() {
   return (
     <Routes>
-      <Route
-        path="/user"
-        element={
-          <ProtectedRoute allowedRoles={["USER"]}>
-            <UserLayout />
-          </ProtectedRoute>
-        }
+       <Route  element={
+        <ProtectedRoute allowedRoles={["USER"]}>
+          <UserLayout/>
+        </ProtectedRoute>
+      }
       >
          <Route index element={<Navigate to="home" />} />
       {ProductRoutes}
