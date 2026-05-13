@@ -26,8 +26,12 @@ function SubCategoryPage() {
 
   const [successMsg, setSuccessMsg] = useState("");
 
+
+  const [nameError, setNameError] = useState("");
+
   const size = 10;
 
+  
   const [formData, setFormData] = useState({
     categoryId: "",
     subCategoryName: "",
@@ -56,15 +60,17 @@ function SubCategoryPage() {
     }
   };
 
-
+ 
   const fetchSubCategories = async () => {
 
     try {
 
-   const response = await getAllSubCategories(page, size);
+      console.log("CURRENT PAGE:", page);
+
+      const response = await getAllSubCategories(page, size);
 
       console.log("SUBCATEGORY RESPONSE:", response.data);
-    
+
       const data = response.data?.data;
 
       const list =
@@ -74,11 +80,11 @@ function SubCategoryPage() {
 
       setSubCategories(list);
 
-    setTotalPages(
-  data?.totalPages ||
-  Math.ceil((list?.length || 0) / size) ||
-  1
-);
+      setTotalPages(
+        data?.totalPages ||
+        Math.ceil((list?.length || 0) / size) ||
+        1
+      );
 
     } catch (error) {
 
@@ -95,8 +101,9 @@ function SubCategoryPage() {
 
   }, [page]);
 
-  
   const handleChange = (e) => {
+
+    setNameError("");
 
     setFormData({
       ...formData,
@@ -104,7 +111,7 @@ function SubCategoryPage() {
     });
   };
 
-  
+ 
   const resetForm = () => {
 
     setFormData({
@@ -112,6 +119,8 @@ function SubCategoryPage() {
       subCategoryName: "",
       status: "ACTIVE",
     });
+
+    setNameError("");
 
     setEditingId(null);
 
@@ -133,7 +142,7 @@ function SubCategoryPage() {
 
     try {
 
-     
+  
       if (editingId) {
 
         await updateSubCategory(editingId, payload);
@@ -143,7 +152,7 @@ function SubCategoryPage() {
         );
       }
 
-   
+     
       else {
 
         await createSubCategory(payload);
@@ -163,26 +172,36 @@ function SubCategoryPage() {
 
     } catch (error) {
 
-      console.log(
-        "Submit error:",
-        error.response?.data || error.message
-      );
+      const errorMsg =
+        error.response?.data?.message ||
+        error.response?.data ||
+        "Something went wrong";
+
+      console.log("Submit error:", errorMsg);
+
+      if (
+        errorMsg.toLowerCase().includes("already")
+      ) {
+        setNameError(
+          "SubCategory already exists"
+        );
+      }
     }
   };
 
-  
- const handleEdit = (item) => {
+ 
+  const handleEdit = (item) => {
 
-  setEditingId(item.id);
+    setEditingId(item.id);
 
-  setFormData({
-    categoryId: item.categoryId || "",
-    subCategoryName: item.subCategoryName || "",
-    status: item.status || "ACTIVE",
-  });
+    setFormData({
+      categoryId: item.categoryId || "",
+      subCategoryName: item.subCategoryName || "",
+      status: item.status || "ACTIVE",
+    });
 
-  setShowModal(true);
-};
+    setShowModal(true);
+  };
 
   
   const toggleStatus = async (item) => {
@@ -221,14 +240,14 @@ function SubCategoryPage() {
 
     <div className="category-container">
 
-    
+   
       {successMsg && (
         <div className="success-popup">
           {successMsg}
         </div>
       )}
 
-    
+      
       <div className="header">
 
         <h2>SubCategories</h2>
@@ -245,7 +264,7 @@ function SubCategoryPage() {
 
       </div>
 
-    
+      
       <table className="category-table">
 
         <thead>
@@ -254,7 +273,7 @@ function SubCategoryPage() {
             <th>S.No</th>
             <th>Category</th>
             <th>SubCategory</th>
-            <th>Status</th>
+
             <th style={{ textAlign: "right" }}>
               Actions
             </th>
@@ -268,7 +287,7 @@ function SubCategoryPage() {
 
             <tr>
               <td
-                colSpan="5"
+                colSpan="4"
                 style={{ textAlign: "center" }}
               >
                 No Data Found
@@ -289,13 +308,10 @@ function SubCategoryPage() {
 
                 <td>{item.subCategoryName}</td>
 
-                <td>{item.status}</td>
-
                 <td>
 
                   <div className="actions-container">
 
-                   
                     <button
                       className="edit-btn"
                       onClick={() => handleEdit(item)}
@@ -328,29 +344,29 @@ function SubCategoryPage() {
       </table>
 
       
-<div className="pagination">
+      <div className="pagination">
 
-  <button
-    disabled={page <= 0}
-    onClick={() => setPage(prev => prev - 1)}
-  >
-    Prev
-  </button>
+        <button
+          disabled={page === 0}
+          onClick={() => setPage(page - 1)}
+        >
+          Prev
+        </button>
 
-  <span>
-    Page {page + 1}
-  </span>
+        <span>
+          Page {page + 1} of {totalPages}
+        </span>
 
-  <button
-    disabled={subCategories.length < size}
-    onClick={() => setPage(prev => prev + 1)}
-  >
-    Next
-  </button>
+        <button
+          disabled={page + 1 >= totalPages}
+          onClick={() => setPage(page + 1)}
+        >
+          Next
+        </button>
 
-</div>
+      </div>
 
-  
+      {/* MODAL */}
       {showModal && (
 
         <div className="modal">
@@ -365,7 +381,7 @@ function SubCategoryPage() {
 
             <form onSubmit={handleSubmit}>
 
-           
+            
               <select
                 name="categoryId"
                 value={formData.categoryId}
@@ -388,7 +404,7 @@ function SubCategoryPage() {
                 ))}
               </select>
 
-            
+           
               <input
                 type="text"
                 name="subCategoryName"
@@ -397,6 +413,13 @@ function SubCategoryPage() {
                 onChange={handleChange}
                 required
               />
+
+             
+              {nameError && (
+                <p className="error-text">
+                  {nameError}
+                </p>
+              )}
 
              
               <div className="modal-actions">
