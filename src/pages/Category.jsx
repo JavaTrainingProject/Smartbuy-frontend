@@ -12,6 +12,7 @@ function CategoryPage() {
   const [totalPages, setTotalPages] = useState(0);
 
 
+
   const fetchCategories = async () => {
     try {
       const res = await API.get(`/admin/categories?page=${page}&size=5&sortBy=id&direction=asc`);
@@ -34,19 +35,21 @@ function CategoryPage() {
   }, [page]);
 
 
+  const [error, setError] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      setError("");
+
       if (editId) {
         await API.put(`/admin/categories/${editId}`, {
           categoryName: name.trim(),
-
         });
       } else {
         await API.post("/admin/categories", {
           categoryName: name.trim(),
-
         });
       }
 
@@ -56,12 +59,19 @@ function CategoryPage() {
       setShowModal(false);
 
     } catch (err) {
-      console.error("Error saving:", err.response?.data || err.message);
-    }
+
+  console.log("FULL ERROR:", err);
+
+  const message =
+    err.response?.data?.message ||
+    "Category name already exists";
+    setError(message);
+}
   };
 
 
   const handleEdit = (cat) => {
+    setError("");
     setName(cat.categoryName);
     setStatus(cat.status);
     setEditId(cat.id);
@@ -102,11 +112,12 @@ function CategoryPage() {
   };
 
   const handleAddClick = () => {
-  setName("");
-  setStatus("ACTIVE");
-  setEditId(null);
-  setShowModal(true);
-};
+    setError("");
+    setName("");
+    setStatus("ACTIVE");
+    setEditId(null);
+    setShowModal(true);
+  };
 
   return (
     <div className="category-container">
@@ -143,27 +154,27 @@ function CategoryPage() {
 
                 <td>
                   <div className="actions-container">
-                  <button
-                    onClick={() => handleEdit(cat)}
-                    className="edit-btn"
-                  >
-                    Edit
-                  </button>
-
-                  <div className="status-container">
-
                     <button
-                      className={`toggle-btn ${cat.status === "ACTIVE"
-                          ? "active"
-                          : "inactive"
-                        }`}
-                      onClick={() => handleToggle(cat)}
+                      onClick={() => handleEdit(cat)}
+                      className="edit-btn"
                     >
-                      <div className="toggle-circle"></div>
+                      Edit
                     </button>
 
+                    <div className="status-container">
 
-                  </div>
+                      <button
+                        className={`toggle-btn ${cat.status === "ACTIVE"
+                          ? "active"
+                          : "inactive"
+                          }`}
+                        onClick={() => handleToggle(cat)}
+                      >
+                        <div className="toggle-circle"></div>
+                      </button>
+
+
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -202,9 +213,13 @@ function CategoryPage() {
                 type="text"
                 placeholder="Enter category name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setError("");
+                }}
                 required
               />
+              {error && <p className="error-text">{error}</p>}
 
               <div className="modal-actions">
                 <button type="submit">
