@@ -1,0 +1,25 @@
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.product-form textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: none;
+}
+
+.product-form input[type="file"] {
+  border: none;
+  padding: 0;
+}
+
+.success-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
