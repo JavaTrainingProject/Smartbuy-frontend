@@ -60,7 +60,7 @@ function LoginForm() {
             if(response.role === "ADMIN"){
                 navigate("/admin/home")
             }else{
-            navigate('/user/home');
+            navigate('/user/');
             }
         }catch(error){
             setApiError("Invalid email or password");
