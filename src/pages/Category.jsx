@@ -65,8 +65,7 @@ function CategoryPage() {
   const message =
     err.response?.data?.message ||
     "Category name already exists";
-
-  setError(message);
+    setError(message);
 }
   };
 
