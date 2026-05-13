@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import logo from "/assets/logo.png";
-
+import "../styles/Navbar.css"
 function Navbar() {
   return (
     <div className="sidebar">
@@ -9,7 +9,7 @@ function Navbar() {
       </div>
 
       <ul className="menu">
-        <li><Link to="/home"> Home</Link></li>
+        <li><Link to="/user/home"> Home</Link></li>
         <li><Link to="/wishlist"> Wishlist</Link></li>
         <li><Link to="/orders"> Orders</Link></li>
         <li><Link to="/add cart">Add cart</Link></li>

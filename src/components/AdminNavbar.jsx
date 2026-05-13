@@ -9,7 +9,7 @@ function AdminNavbar() {
       </div>
 
       <ul className="menu">
-        <li><Link to="/home"> Home</Link></li>
+        <li><Link to="/admin/home"> Home</Link></li>
         <li><Link to="/admin/category"> Category</Link></li>
         <li><Link to="/subcategory"> SubCategory</Link></li>
         <li><Link to="/product">Product</Link></li>

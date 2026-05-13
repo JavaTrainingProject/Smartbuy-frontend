@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { setAccessToken, setRefreshToken } from '../services/authService';
+import '../styles/LoginPage.css';
 import { login } from '../services/Login';
-import '../styles/LoginPage.css';
-import axiosInstance from '../services/axiosInstance';
-import { loginUser } from '../services/authService';
-import '../styles/LoginPage.css';
+
 
 
 function LoginForm() {
@@ -58,10 +56,11 @@ function LoginForm() {
             localStorage.setItem('userId', response.id);
             localStorage.setItem('role',response.role);
             localStorage.setItem("userId",response.id);
+            localStorage.setItem("fullName", response.user_name);
             if(response.role === "ADMIN"){
-                navigate("/admin")
+                navigate("/admin/home")
             }else{
-            navigate('/user');
+            navigate('/user/home');
             }
         }catch(error){
             setApiError("Invalid email or password");
