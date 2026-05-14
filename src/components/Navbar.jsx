@@ -12,7 +12,7 @@ function Navbar() {
         <li><Link to="/user/home"> Home</Link></li>
         <li><Link to="/wishlist"> Wishlist</Link></li>
         <li><Link to="/orders"> Orders</Link></li>
-        <li><Link to="/add cart">Add cart</Link></li>
+        <li><Link to="/cart">Add cart</Link></li>
       </ul>
     </div>
   );
