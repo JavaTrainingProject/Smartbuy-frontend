@@ -196,18 +196,17 @@
 .pagination {
   display: flex;
   justify-content: center;
- 
-  gap: 10px;
-  margin-top: 30px;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
 }
 
 .pagination button {
-   width: 40px;
-  height: 40px;
+  padding: 8px 16px;
   border: none;
-  border-radius: 8px;
   background: #2563eb;
   color: white;
+  border-radius: 6px;
   cursor: pointer;
 }
 
@@ -215,9 +214,7 @@
   background: #ccc;
   cursor: not-allowed;
 }
-.pagination button.active {
-  background: #0d47a1;
-}
+
 
 .status-container {
   display: flex;
@@ -271,23 +268,29 @@
   justify-content: flex-end;
   gap: 15px;
 }
-
-.category-card {
-  background: #e0f2fe;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-  font-weight: 500;
-}
-
-.category-card:hover {
-  background: #38bdf8;
+.success-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #22c55e;
   color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  z-index: 2000;
+  animation: popup 0.3s ease;
 }
-.error-text {
-  color: red;
-  font-size: 14px;
-  margin-top: 5px;
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-content select,
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }

@@ -78,12 +78,6 @@ body {
   min-height: 100vh;
 }
 
-.products-section {
-  flex: 1;
-  width:100%;
-}
-
-
 .sidebar {
   width: 240px;
   height: 100vh;
