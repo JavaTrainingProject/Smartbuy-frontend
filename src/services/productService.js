@@ -23,8 +23,23 @@ export const getProductById = async (id) => {
   return res.data?.data;
 };
 
+export const createProduct = async (formData) => {
 
-// CREATE PRODUCT
+  const res = await axiosInstance.post(
+    "/products",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return res.data;
+};
+
+
+
 
 // GET PRODUCTS BY CATEGORY
 export const getProductsByCategory = async (
