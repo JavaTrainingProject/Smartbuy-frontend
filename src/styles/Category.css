@@ -196,17 +196,18 @@
 .pagination {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 15px;
-  margin-top: 20px;
+ 
+  gap: 10px;
+  margin-top: 30px;
 }
 
 .pagination button {
-  padding: 8px 16px;
+   width: 40px;
+  height: 40px;
   border: none;
+  border-radius: 8px;
   background: #2563eb;
   color: white;
-  border-radius: 6px;
   cursor: pointer;
 }
 
@@ -214,7 +215,9 @@
   background: #ccc;
   cursor: not-allowed;
 }
-
+.pagination button.active {
+  background: #0d47a1;
+}
 
 .status-container {
   display: flex;
@@ -269,6 +272,20 @@
   gap: 15px;
 }
 
+.category-card {
+  background: #e0f2fe;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.category-card:hover {
+  background: #38bdf8;
+  color: white;
+}
 .error-text {
   color: red;
   font-size: 14px;

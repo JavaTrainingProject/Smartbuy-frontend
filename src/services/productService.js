@@ -1,26 +1,48 @@
 import axiosInstance from "./axiosInstance";
 
-export const getAllProducts = (page = 0, size = 5) => {
-  return axiosInstance.get(`/products?page=${page}&size=${size}`);
+// GET ALL PRODUCTS
+export const getAllProducts = async () => {
+
+  const res = await axiosInstance.get(
+    "/products?page=0&size=50"
+  );
+
+  console.log("PRODUCT RESPONSE:", res.data);
+
+  return res.data?.data?.content || [];
 };
 
 
-export const getProductById = (id) => {
-  return axiosInstance.get(`/products/${id}`);
+// GET PRODUCT BY ID
+export const getProductById = async (id) => {
+
+  const res = await axiosInstance.get(
+    `/products/${id}`
+  );
+
+  return res.data?.data;
 };
 
 
-export const createProduct = (formData) => {
-  return axiosInstance.post(`/products/create`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-};
+// CREATE PRODUCT
 
+// GET PRODUCTS BY CATEGORY
+export const getProductsByCategory = async (
+  categoryName
+) => {
 
-export const deleteProduct = (id) => {
-  return axiosInstance.delete(`/products/${id}`);
-};
+  const res = await axiosInstance.get(
+    "/products?page=0&size=50"
+  );
 
-export const toggleProductStatus = (id, status) => {
-  return axiosInstance.patch(`/products/${id}/status?status=${status}`);
+  const products =
+    res.data?.data?.content || [];
+
+  return products.filter(
+    (product) =>
+
+      product.categoryName
+        ?.toLowerCase() ===
+      categoryName?.toLowerCase()
+  );
 };
