@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/UserDashboard.css";
 
 import {
@@ -6,6 +7,8 @@ import {
   getProductsByCategory
 } from "../services/productService";
 import { getActiveCategories } from "../services/categoryService";
+
+import axiosInstance from "../services/axiosInstance";
 
 function UserDashboard() {
 
@@ -20,6 +23,8 @@ function UserDashboard() {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -107,46 +112,66 @@ function UserDashboard() {
 
   setShowDropdown(false);
 };
-  // SEARCH FILTER
-  const handleSearch = (value) => {
 
-    setSearchTerm(value);
+const handleSearch = (value) => {
 
-    let filtered = products;
+  setSearchTerm(value);
 
-    // CATEGORY FILTER
-    if (selectedCategory) {
+  let filtered = products;
 
-      filtered = filtered.filter(
+  if (selectedCategory) {
 
-        (product) =>
-
-          product.categoryName
-            ?.toLowerCase() ===
-
-          (
-            selectedCategory.categoryName ||
-
-            selectedCategory.category_name
-          )
-            ?.toLowerCase()
-      );
-    }
-
-    // SEARCH FILTER
     filtered = filtered.filter(
 
       (product) =>
 
-        product.name
-          ?.toLowerCase()
-          .includes(
-            value.toLowerCase()
-          )
-    );
+        product.categoryName
+          ?.toLowerCase() ===
 
-    setFilteredProducts(filtered);
-  };
+        (
+          selectedCategory.categoryName ||
+
+          selectedCategory.category_name
+        )
+          ?.toLowerCase()
+    );
+  }
+
+  filtered = filtered.filter(
+
+    (product) =>
+
+      product.name
+        ?.toLowerCase()
+        .includes(value.toLowerCase())
+  );
+
+  setFilteredProducts(filtered);
+};
+
+
+  // SEARCH FILTER
+const addToCart = async (product) => {
+
+  try {
+
+    const res = await axiosInstance.post("/cart/add", {
+
+      productId: product.id,
+      quantity: 1,
+
+    });
+
+    console.log("ADD CART RESPONSE:", res.data);
+
+    navigate("/cart");
+
+  } catch (err) {
+
+    console.log("ADD CART ERROR:", err);
+
+  }
+};
 
   return (
 
@@ -293,11 +318,12 @@ function UserDashboard() {
 
                   <div className="product-actions">
 
-                    <button className="cart-btn">
-
-                      Add Cart
-
-                    </button>
+                  <button
+                  className="cart-btn"
+                     onClick={() => addToCart(product)}
+>
+  Add Cart
+</button>
 
                     <button className="wishlist-btn">
 
